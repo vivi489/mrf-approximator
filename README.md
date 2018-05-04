@@ -31,4 +31,4 @@ The above execution trains a model to learn a 1D function for 30 trials.
 ### Training Loss
 Training losses from different policies are plotted in running average.
 
-![](img/eval1d.png)
+![](img/eval1d.png | width=100)
