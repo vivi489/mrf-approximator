@@ -62,18 +62,23 @@ class Env:
         return r
     
     def getAdj(self):
-        matrixA = np.zeros((self.size, self.size))
+        matrixAdj = np.zeros((self.size, self.size))
         for i in range(self.size):
             for j in range(i+1, self.size):
                 if self._idxMgr.isAdj(i, j):
-                    matrixA[i, j] = 1
-                    matrixA[j, i] = 1
-        return matrixA
+                    matrixAdj[i, j] = 1
+                    matrixAdj[j, i] = 1
+        return matrixAdj
 
-    def getOptimumIndex(self):
+    def getOptimumIndex(self, reverse=False): #minimum for reverse==True
         val, index = None, -1
         for i in range(self.size):
-            if index < 0 or self._fi(i) > val:
-                index = i
-                val = self._fi(i)
+            if not reverse:
+                if index < 0 or self._fi(i) > val:
+                    index = i
+                    val = self._fi(i)
+            else:
+                if index < 0 or self._fi(i) < val:
+                    index = i
+                    val = self._fi(i)
         return index, val

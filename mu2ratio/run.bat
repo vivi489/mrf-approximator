@@ -1,0 +1,1 @@
+java -jar mu2ratio.jar ./musigma.csv ./weights.csv

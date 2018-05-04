@@ -10,4 +10,5 @@ class Node:
 
     def __str__(self):
         return "Point Mean = {0}, Point Count = {1}".format(self.mean, self.count)
-    
+
+  

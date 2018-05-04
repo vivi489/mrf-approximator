@@ -5,19 +5,31 @@ import abc
 
 class ACQ:
     __metaclass__ = abc.ABCMeta
+    """
+    ### example params ###
+    acquisition_params = {
+        "par": 0.01,
+        "dim": 1,
+        "eps": 0.2,
+        "delta": 0.9
+    }
+    """
     def __init__(self, params):
         self.params = params
         self.name = None
 
     @abc.abstractmethod
     def acquire(self, mu, var, best=None, rsize=0):
-        pass
+        raise NotImplementedError
     
+    @abc.abstractmethod
+    def __str__(self):
+        raise NotImplementedError
+
 
 class EI(ACQ):
     def __init__(self, params):
         super(EI, self).__init__(params)
-        self.name = "ei"
         
     def acquire(self, mu, var, best=None, rsize=0):
         par = self.params["par"]
@@ -27,6 +39,9 @@ class EI(ACQ):
         else:
             z = (mu - best - par) / sigma
         return z * sigma * norm.cdf(z) + sigma * norm.pdf(z)
+    
+    def __str__(self):
+        return "ei"
 
 class PI(ACQ):
     def __init__(self, params):
@@ -43,6 +58,9 @@ class PI(ACQ):
         else:
             z = (mu - best - par) / sigma
         return norm.cdf(z)
+    
+    def __str__(self):
+        return "pi"
 
 class UCB(ACQ):
     def __init__(self, params):
@@ -60,6 +78,9 @@ class UCB(ACQ):
         beta = self._getBeta(rsize)
         sigma = np.sqrt(var)
         return mu + sigma * np.sqrt(beta)
+    
+    def __str__(self):
+        return "ucb"
  
 class TS(ACQ):
     def __init__(self, params):
@@ -69,6 +90,9 @@ class TS(ACQ):
     def acquire(self, mu, var, best=None, rsize=0):
         sigma = np.sqrt(var)
         return np.random.normal(mu, sigma)
+    
+    def __str__(self):
+        return "ts"
         
 
 class EPS(ACQ):
@@ -84,4 +108,6 @@ class EPS(ACQ):
             retVal[np.argmax(mu)] = 1
             return retVal
     
+    def __str__(self):
+        return "eps"
     

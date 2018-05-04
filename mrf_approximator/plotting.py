@@ -6,11 +6,11 @@ import numpy as np
 color_map = {"ucb":"black", "pi":"purple", "ei":"blue", "ts":"red", "eps":"green"}
 
 
-def eval_regrets(regrets, labels, path):
+def eval_regrets(regrets, labels, path, xlabel, ylabel):
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    plt.xlabel("Iteration")
-    plt.ylabel("Average Regret")
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
     
     handles = []
     for regret, acq in zip(regrets, labels):
@@ -24,7 +24,7 @@ def eval_regrets(regrets, labels, path):
         handles.append(handle)
 
     ax.legend(handles, [l.upper() for l in labels])
-    plt.savefig(path)
+    plt.savefig(path, bbox_inches='tight')
     plt.close()
 
 
