@@ -2,6 +2,10 @@ import numpy as np
 from node import Node
 from scipy import linalg
 
+"""
+the core driving class for random markov field optimization
+"""
+
 class Optimizer:
     def __init__(self, env, hyperparams, edge_normal=False):
         self.hyperparams = {}
@@ -9,12 +13,12 @@ class Optimizer:
         self.hyperparams["gamma_y"] = 0.01 if hyperparams is None else hyperparams["gamma_y"]
         self.hyperparams["gamma"] = 0.02 * env.dim if hyperparams is None else hyperparams["gamma"]
         self.hyperparams["gamma_0"] = 0.01 * self.hyperparams["gamma"] if hyperparams is None else hyperparams["gamma_0"]
-        self.edge_normal = edge_normal
+        self.edge_normal = edge_normal # edge normalization
         self.env = env
         self.nodes = [Node() for _ in range(self.env.size)]
         self.matrixA, self.matrixB_diag = self._getAB()
         
-    def _getAB(self):
+    def _getAB(self): # return an adjacent matrix and a vector representing diagonal
         matrixA = self.env.getAdj()
         neighbor_count = None
         if self.edge_normal:
@@ -29,7 +33,7 @@ class Optimizer:
 
         return matrixA, matrixB_diag
         
-    def _updateAB(self):
+    def _updateAB(self): # update model posterior when nodes get altered
         for i in range(self.env.size):
             self.matrixA[i, i] -= self.matrixB_diag[i]
         self.matrixB_diag = np.array([n.count * self.hyperparams["gamma"] + self.hyperparams["gamma_0"] for n in self.nodes])
@@ -44,7 +48,7 @@ class Optimizer:
     def updateModel(self):
         self._updateAB()
     
-    def sample(self, index, force_value=None):
+    def sample(self, index, force_value=None): # use force_value to update node stats without sampling from env
         r = self.env.sample(index) if force_value is None else force_value
         self.nodes[index].update(r)
         return r

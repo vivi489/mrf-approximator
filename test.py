@@ -21,7 +21,7 @@ def test_trial(dim, configurations):
     nIter = configurations["learning_iterations"]
     animated = configurations["animated"]
     acq_f = configurations["acq_func"]
-    noise = configurations["noise"] # sqrt of variance in Gaussian
+    noise = configurations["noise"] # Gaussian variance
     wdir = configurations["working_dir"] # dir for regret evaluation, state snapshots and animation 
 
     

@@ -137,12 +137,12 @@ def experiment_setup_testbench(dim):
             _get_func(2),
             _get_func(3)
         ][dim-1],
-        "learning_iterations": 100,
+        "learning_iterations": 3,
         "acq_func": [
-            acq.EI(acquisition_params), 
-            acq.PI(acquisition_params), 
-            acq.UCB(acquisition_params),  
-            acq.EPS(acquisition_params),
+            # acq.EI(acquisition_params), 
+            # acq.PI(acquisition_params), 
+            # acq.UCB(acquisition_params),  
+            # acq.EPS(acquisition_params),
             acq.TS(acquisition_params)
         ],
         "N": 100000,

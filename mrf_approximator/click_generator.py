@@ -2,6 +2,11 @@
 import numpy as np
 from scipy.special import logit
 
+"""
+ClickGenerator makes real-world online click behavior simulation.
+Given some environment and total number of ad budget, it generates
+clicks and computes CTR at every environment location.
+"""
 class ClickGenerator:
     def __init__(self, env, N):
         self._env = env
@@ -26,4 +31,4 @@ class ClickGenerator:
         count = np.random.binomial(n, prob)
         ctr = (1 + count) / (2 + n)
         return count, logit(ctr)
-    
+
