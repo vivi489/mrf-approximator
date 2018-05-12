@@ -26,7 +26,7 @@ $ python test.py 1 30
 ```
 The above execution trains a model to learn a 1D function for 30 trials.
 
-![](img/animation_eps.gif)
+![](img/animation_ts.gif)
 
 ### Training Loss
 Training losses from different policies are plotted in running average.
