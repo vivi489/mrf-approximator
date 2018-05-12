@@ -88,8 +88,8 @@ def experiment_setup(dim):
             _get_func(2),
             _get_func(3)
         ][dim-1],
-        "learning_iterations": 1000,
-        "animated": (True, 200),
+        "learning_iterations": 400,
+        "animated": (True, 20),
         "acq_func": [
             acq.EI(acquisition_params), 
             acq.PI(acquisition_params), 

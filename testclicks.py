@@ -12,7 +12,7 @@ import numpy as np
 import os, time, sys
 
 
-
+#a complete experiment episode of specified iterations
 def test_trial(dim, configurations):
     
     hyperparams = configurations["hyperparams"]
@@ -20,8 +20,8 @@ def test_trial(dim, configurations):
     func = configurations["func"]
     nIter = configurations["learning_iterations"]
     acq_f = configurations["acq_func"]
-    wdir = configurations["working_dir"]
-    N = configurations["N"]
+    wdir = configurations["working_dir"] # dir for regret evaluation and temp recources 
+    N = configurations["N"] # number of total clicks
     
     np.random.seed(int(time.time() * 1000 % 10000))
     regrets = [experiment_clicks(spaces, func, nIter, wdir, N=N, acq=acq, hyperparams=hyperparams) for acq in acq_f]
@@ -37,17 +37,17 @@ def main(argv):
     dim = int(argv[0])
     n_trials = int(argv[1])
     configurations = experiment_setup_testbench(dim)
-    regrets_across_trials = []
+    regrets_across_trials = [] #2d array that contains regret lists from all experiment trials
     for n in range(n_trials):
         print("test trial %d"%(n+1), "for %d"%n_trials)
         regrets_across_trials.append(test_trial(dim, configurations))
         
     regrets_across_trials = np.array(regrets_across_trials)
-    eval_regrets(regrets_across_trials.mean(axis=0), 
+    eval_regrets(regrets_across_trials.mean(axis=0), #final evaluation is averaged across trials 
                  [str(acq) for acq in configurations["acq_func"]], 
                  os.path.join(configurations["working_dir"], "eval%dd.eps"%dim), 
-                 "Iteration", 
-                 "Average Regret")
+                 configurations["xlabel"],
+                 configurations["ylabel"],)
     
 
 if __name__ == "__main__":

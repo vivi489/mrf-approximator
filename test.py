@@ -12,7 +12,7 @@ import numpy as np
 import os, time, sys
 
 
-
+#a complete experiment episode of specified iterations
 def test_trial(dim, configurations):
     
     hyperparams = configurations["hyperparams"]
@@ -21,8 +21,8 @@ def test_trial(dim, configurations):
     nIter = configurations["learning_iterations"]
     animated = configurations["animated"]
     acq_f = configurations["acq_func"]
-    noise = configurations["noise"]
-    wdir = configurations["working_dir"]
+    noise = configurations["noise"] # sqrt of variance in Gaussian
+    wdir = configurations["working_dir"] # dir for regret evaluation, state snapshots and animation 
 
     
     np.random.seed(int(time.time() * 1000 % 10000))
@@ -31,7 +31,7 @@ def test_trial(dim, configurations):
         for acq in acq_f:
             src_images = os.path.join(configurations["working_dir"], "%dd_%s_*.png"%(dim,acq))
             dst_gif = os.path.join(configurations["working_dir"], "animation_%s.gif"%acq)
-            os.system("convert -delay 20 -loop 0 \"%s\" \"%s\""%(src_images, dst_gif))
+            os.system("convert -delay 20 -loop 0 \"%s\" \"%s\""%(src_images, dst_gif)) #imageMacgick is required
             
     return np.array(regrets)
     
@@ -44,17 +44,17 @@ def main(argv):
     dim = int(argv[0])
     n_trials = int(argv[1])
     configurations = experiment_setup(dim)
-    regrets_across_trials = []
+    regrets_across_trials = [] #2d array that contains regret lists from all experiment trials
     for n in range(n_trials):
         print("test trial %d"%(n+1), "for %d"%n_trials)
         regrets_across_trials.append(test_trial(dim, configurations))
         
     regrets_across_trials = np.array(regrets_across_trials)
-    eval_regrets(regrets_across_trials.mean(axis=0), 
+    eval_regrets(regrets_across_trials.mean(axis=0), #final evaluation is averaged across trials 
                  [str(acq) for acq in configurations["acq_func"]], 
                  os.path.join(configurations["working_dir"], "eval%dd.eps"%dim), 
-                 "Iteration", 
-                 "Average Regret")
+                 configurations["xlabel"], 
+                 configurations["ylabel"])
     
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@ import numpy as np
 
 
 class IndexManager:
-    def __init__(self, shape):
+    def __init__(self, shape): # shape is always a dimension array; exception otherwise
         assert len(shape) > 0, "invalid shape definition in index manager"
         self._shape = shape
         self.size = functools.reduce(operator.mul, shape, 1)
@@ -18,7 +18,7 @@ class IndexManager:
             prod *= self._shape[i]
         return index
 
-    def unflatten(self, index):
+    def unflatten(self, index): # return coordinates in C-style order
         indices = []
         prod = self.size
         for i in range(len(self._shape)):
