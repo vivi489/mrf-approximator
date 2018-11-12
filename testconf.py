@@ -1,13 +1,13 @@
-
 import numpy as np
 from scipy.stats import multivariate_normal
 from scipy.stats import norm
 
-import acq, os
+from mrf_approximator import acq
+import os
 
 def _get_spaces(dim):
     return {
-        1: [np.linspace(-10, 10, 1000)],
+        1: [np.linspace(-10, 10, 400)],
         2: [np.linspace(-5, 5, 30), np.linspace(-4, 4, 20)],
         3: [np.linspace(-8, 8, 16), np.linspace(-6, 6, 10), np.linspace(-5, 5, 8)]
     }[dim]
@@ -89,10 +89,10 @@ def experiment_setup(dim):
             _get_func(3)
         ][dim-1],
         "learning_iterations": 400,
-        "animated": (True, 20),
+        "animated": (False, 20),
         "acq_func": [
-            acq.EI(acquisition_params), 
-            acq.PI(acquisition_params), 
+            #acq.EI(acquisition_params), 
+            #acq.PI(acquisition_params), 
             acq.UCB(acquisition_params),  
             acq.EPS(acquisition_params),
             acq.TS(acquisition_params)
@@ -137,7 +137,7 @@ def experiment_setup_testbench(dim):
             _get_func(2),
             _get_func(3)
         ][dim-1],
-        "learning_iterations": 3,
+        "learning_iterations": 5,
         "acq_func": [
             # acq.EI(acquisition_params), 
             # acq.PI(acquisition_params), 

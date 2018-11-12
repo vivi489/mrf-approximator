@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-import sys; sys.path.insert(0, './mrf_approximator')
+import sys
 from scipy.stats import norm
 
-from acq import *
-from plotting import *
+from mrf_approximator.acq import *
+from mrf_approximator.plotting import *
 from experiments import *
 from testconf import experiment_setup
 

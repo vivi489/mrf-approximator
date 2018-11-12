@@ -53,8 +53,10 @@ class Env:
         self.size = self._idxMgr.size # size of the discrete space 
         self.dim = len(xn)# discrete space dimension
 
-    def _pos2x(self, *pos): # coordinates to index
-        # the last grid axis in self._xn is indexed by the last (innermost) cooridate
+    # coordinates to index (axis positions to values on axes)
+    # transform a location into a feature
+    def _pos2x(self, *pos): 
+        # the last grid axis in self._xn is indexed by the last (innermost) coordinate
         return [self._xn[i][pos[i]] for i in range(len(self._xn))]
 
     def _fpos(self, *pos):
@@ -71,7 +73,8 @@ class Env:
         if not truth: r += np.random.normal(0, sqrt(self._noise))
         return r
     
-    def getAdj(self): # returns a self.size * self.size matrix with A[j, i] = 1 for adjacent indices
+    # returns a self.size * self.size matrix with A[j, i] = 1 for adjacent indices
+    def getAdj(self): 
         matrixAdj = np.zeros((self.size, self.size))
         for i in range(self.size):
             for j in range(i+1, self.size):
@@ -80,7 +83,8 @@ class Env:
                     matrixAdj[j, i] = 1
         return matrixAdj
 
-    def getOptimumIndex(self, reverse=False): # return minimum value and index for reverse==True
+    # return minimum value and index for reverse==True
+    def getOptimumIndex(self, reverse=False): 
         val, index = None, -1
         for i in range(self.size):
             if not reverse:

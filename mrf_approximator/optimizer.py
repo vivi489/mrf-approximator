@@ -1,11 +1,10 @@
 import numpy as np
-from node import Node
 from scipy import linalg
+from .node import Node
 
 """
 the core driving class for random markov field optimization
 """
-
 class Optimizer:
     def __init__(self, env, hyperparams, edge_normal=False):
         self.hyperparams = {}

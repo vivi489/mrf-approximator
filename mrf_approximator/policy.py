@@ -1,7 +1,7 @@
 
 from enum import Enum
 import numpy as np
-from ipc import posterior2ratio
+from .ipc import posterior2ratio
 
 class MetaPolicy(Enum):
     ACQ = 0

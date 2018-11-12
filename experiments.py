@@ -1,11 +1,10 @@
-import sys; sys.path.insert(0, './mrf_approximator')
-from env import Env
-from optimizer import Optimizer
-from click_generator import ClickGenerator
-from policy import Policy
-from math import log
-import plotting
+from mrf_approximator.env import Env
+from mrf_approximator.optimizer import Optimizer
+from mrf_approximator.click_generator import ClickGenerator
+from mrf_approximator.policy import Policy
+from mrf_approximator import plotting
 
+from math import log
 import numpy as np
 import os, sys
 

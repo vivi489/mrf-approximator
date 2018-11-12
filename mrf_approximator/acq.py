@@ -3,8 +3,7 @@ from scipy.stats import norm
 import numpy as np
 import abc 
 
-class ACQ:
-    __metaclass__ = abc.ABCMeta
+class ACQ(abc.ABC):
     """
     ### example params ###
     acquisition_params = {
