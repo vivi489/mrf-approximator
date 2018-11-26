@@ -1,8 +1,8 @@
 
 class Node:
-    def __init__(self, mean=0.0, count=0):
-        self.mean = mean
-        self.count = count
+    def __init__(self):
+        self.mean = 0.0
+        self.count = 0
 
     def update(self, r):
         self.count += 1
@@ -11,4 +11,3 @@ class Node:
     def __str__(self):
         return "Point Mean = {0}, Point Count = {1}".format(self.mean, self.count)
 
-  

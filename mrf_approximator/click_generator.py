@@ -11,24 +11,24 @@ class ClickGenerator:
     def __init__(self, env, N):
         self._env = env
         self._N = N
-        self._getMinMax()
+        self._get_min_max()
         
-    def _getMinMax(self):
-        _, self.global_max = self._env.getOptimumIndex()
-        _, self.global_min = self._env.getOptimumIndex(reverse=True)
-        #print(self.global_min, self.global_max)
+    def _get_min_max(self):
+        _, self.global_max = self._env.get_optimum_index()
+        _, self.global_min = self._env.get_optimum_index(reverse=True)
         
-    def _minMaxScale(self, val): #TODO: if global max equals min
+    def _min_max_scale(self, val):  # TODO: if global max equals min
         return (val - self.global_min) / (self.global_max - self.global_min)
     
-    def getTruth(self):
-        return self._minMaxScale(self.global_max)
+    def get_truth(self):
+        return self._min_max_scale(self.global_max)
         
-    def collectAt(self, n, index):
-        assert n>=0, "negative impression at the click generator"
+    def collect_at(self, n, index):
+        assert n >= 0, "negative impression at the click generator"
         prob = self._env.sample(index, truth=True)
-        prob = self._minMaxScale(prob)
-        count = np.random.binomial(n, prob)
+        prob = self._min_max_scale(prob)
+        count = np.random.binomial(n, prob) // 4
         ctr = (1 + count) / (2 + n)
-        return count, logit(ctr)
+        return count, logit(ctr) * 10 + ctr * 50
+
 

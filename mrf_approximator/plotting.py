@@ -1,16 +1,20 @@
 import matplotlib.pyplot as plt
 from matplotlib import cm
+from collections import defaultdict
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 
-color_map = {"ucb":"black", "pi":"purple", "ei":"blue", "ts":"red", "eps":"green"}
+color_map = defaultdict(lambda: "grey")
+color_map.update({"ucb": "black", "pi": "purple", "ei": "blue", "ts": "red", "eps": "green"})
+# marker_map = {"ucb": "|", "pi": ".", "ei": "+", "ts": "x", "eps": "_"}
 
-
-def eval_regrets(regrets, labels, path, xlabel, ylabel):
+def eval_regrets(regrets, labels, path, xlabel, ylabel, ylog=False):
     fig = plt.figure()
     ax = fig.add_subplot(111)
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
+    if ylog:
+        plt.yscale("log")
     
     handles = []
     for regret, acq in zip(regrets, labels):
@@ -35,7 +39,7 @@ def plot_state_1d(spaces, func, optimizer, path):
     handles = []
     handle, = ax.plot(space, func(space), color="black")
     handles.append(handle)
-    mu, _ = optimizer.getPosterior()
+    mu, _ = optimizer.get_posterior()
     handle, = ax.plot(space, mu, color="red")
     handles.append(handle)
     ax.legend(handles, ["truth", "inference"])    
@@ -54,10 +58,10 @@ def plot_state_2d(spaces, func, optimizer, path):
     
     ax.plot_wireframe(X, Y, func(F), color="black", label="truth")
     
-    y, _ = optimizer.getPosterior()
-    Z = np.empty(X.shape) #to store current inference mu
+    y, _ = optimizer.get_posterior()
+    Z = np.empty(X.shape)  # to store current inference mu
     
-    y, _ = optimizer.getPosterior()
+    y, _ = optimizer.get_posterior()
     for j in range(Z.shape[0]):
         for i in range(Z.shape[1]):
             Z[j, i] = y[j * Z.shape[1] + i]
@@ -81,9 +85,9 @@ def plot_state_3d(spaces, func, optimizer, path):
     ax.set_title("truth", size=20)
     fig.colorbar(path3DCollection, shrink=0.7, aspect=20)
     
-    y, _ = optimizer.getPosterior()
-    W = np.empty(X.shape) #to store current inference mu
-    y, _ = optimizer.getPosterior()
+    y, _ = optimizer.get_posterior()
+    W = np.empty(X.shape)  # to store current inference mu
+    y, _ = optimizer.get_posterior()
     for k in range(W.shape[0]):
         for j in range(W.shape[1]):
             for i in range(W.shape[2]):
